@@ -8,7 +8,7 @@
         </li>
         <li class="breadcrumb-item active">Pembayaran</li>
     </ol>
-    @if ($pesanans->total < $list_pembayaran->sum('jumlah_bayar'))
+    {{-- @if ($pesanans->total < $list_pembayaran->sum('jumlah_bayar')) --}}
     <div class="row">
         <form wire:submit.prevent="store" enctype="multipart/form-data">
             <div class="border p-4 rounded">
@@ -93,7 +93,7 @@
 
         </form>
     </div>
-    @endif
+    {{-- @endisf --}}
    
 
     <div class="row mt-4">

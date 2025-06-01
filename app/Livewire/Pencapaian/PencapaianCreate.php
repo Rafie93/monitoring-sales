@@ -24,7 +24,8 @@ class PencapaianCreate extends Component
     public function proses(){
         $sales = Sales::all();
         $this->results=[];
-        $cekHariKerja = Harikerja::where('tahun',$this->tahun)->where('bulan',$this->bulan)->first();
+        $cekHariKerja = Harikerja::where('tahun',$this->tahun)
+                ->where('bulan',$this->bulan)->first();
         if($cekHariKerja){
             $this->hari_kerja = $cekHariKerja->jumlah_kerja;
         }
@@ -33,13 +34,14 @@ class PencapaianCreate extends Component
             $absensi = Absensi::whereYear('tanggal',$this->tahun)
                     ->whereMonth('tanggal',$this->bulan)
                     ->whereNotNull('jam_masuk')
-                    ->whereNotNull('jam_keluar')
+                    ->where('id_sales',$row->id_sales)
                     ->count();
             $penjualan = PesananKendaraan::where('id_sales',$row->id_sales)
                                     ->whereYear('tanggal_pesanan',$this->tahun)
                                     ->whereMonth('tanggal_pesanan',$this->bulan)
-                                    ->where('status_pesanan','SPK Dibuat')
+                                    // ->where('status_pesanan','SPK Dibuat')
                                     ->sum('jumlah_unit');
+            // dd($penjualan);
             // $absensi = 12;
             // $penjualan = 3;
             $presentasiPenjualan = ($penjualan/$row->target)*100;
