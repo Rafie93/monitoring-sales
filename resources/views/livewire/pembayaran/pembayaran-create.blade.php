@@ -18,9 +18,22 @@
                         <div id="box" class="col-sm-8 col-xs-8">
                             <input style="margin-right:5px;width:80%;float:left" 
                             type="text" class="form-control"  disabled
-                            value="{{$pesanans->no_spk}}">
+                            value="{{$pesanans->no_spk}}"/>
+                            @error('id_pesanan') <i class="text-danger">{{ $message }}</i> @enderror
+                            
                         </div>
-                        @error('id_pesanan') <i class="text-danger">{{ $message }}</i> @enderror
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <label  for="form-workphoneNumber" class="col-sm-4 col-xs-4 control-label"></label>
+                        <div id="box" class="col-sm-8 col-xs-8">
+                            <i class="text-primary">Grand Total : Rp. {{ number_format($total) }}</i><br/>
+                            <i class="text-primary">Terbayar : Rp. {{ number_format($terbayar) }}</i><br/>
+                            <i class="text-danger">Sisa : Rp. {{ number_format($sisa) }}</i> 
+                        </div>
+
                     </div>
                 </div>
                 <div class="form-group mt-4">

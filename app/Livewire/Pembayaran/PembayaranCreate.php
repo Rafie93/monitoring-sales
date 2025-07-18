@@ -20,7 +20,12 @@ class PembayaranCreate extends Component
     {
         $this->pesanans = PesananKendaraan::find($this->id_pesanan);
         $list_pembayaran = Pembayaran::where('id_pesanan',$this->id_pesanan)->get();
-        return view('livewire.pembayaran.pembayaran-create',compact('list_pembayaran'));
+        $terbayar = $list_pembayaran->sum('jumlah_bayar');
+        $total = $this->pesanans->total;
+        $sisa =  $total - $terbayar;
+        $this->jumlah_bayar = $sisa;
+        // dd($sisa);
+        return view('livewire.pembayaran.pembayaran-create',compact('list_pembayaran','sisa','terbayar','total'));
     }
 
     public function store(){
@@ -37,16 +42,21 @@ class PembayaranCreate extends Component
 
             return;
         }
-
-        $this->bukti_pembayaran->storeAs('public/bukti', $this->bukti_pembayaran->hashName());
-
-        Pembayaran::create([
+        $data = Pembayaran::create([
             'id_pesanan' => $this->id_pesanan,
             'metode_bayar' => $this->metode_bayar,
             'jumlah_bayar' => $this->jumlah_bayar,
             'keterangan_bayar' => $this->keterangan,
-            'bukti_bayar' => $this->bukti_pembayaran->hashName()
         ]);
+        if ($this->bukti_pembayaran) {
+            $this->bukti_pembayaran->storeAs('public/bukti', $this->bukti_pembayaran->hashName());
+            $data->bukti_bayar = $this->bukti_pembayaran->hashName();
+            $data->save();
+
+        }
+
+
+        
         $status_pembayaran = "Belum Bayar";
         if($sudah_dibayar + $this->jumlah_bayar == $maksimal_pembayaran){
             $status_pembayaran = "Lunas";
